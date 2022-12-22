@@ -28,10 +28,10 @@ app.post("/",function(req,res){
 
   const jsonData = JSON.stringify(data);
 
-  const url = "https://us14.api.mailchimp.com/3.0/lists/20bd8d54e7/members";
+  const url = "https://us14.api.mailchimp.com/3.0/lists/$list-id/members";
   const options = {
     method:"POST",
-    auth:"Saizal:e496ef1e256052087465dff1dc8924c9-us14"
+    auth:"Saizal:$api-key"
   };
 
   const request = https.request(url,options,function(response){
@@ -49,8 +49,4 @@ app.listen(3000, function(){
   console.log("Port is running");
 });
 
-// e496ef1e256052087465dff1dc8924c9-us14
-// API KEY
 
-// 20bd8d54e7
-// Audience id
