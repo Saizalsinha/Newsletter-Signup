@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const request = require("request");
-
+const https = require("https");
 
 const app = express();
 
@@ -13,11 +13,44 @@ app.get("/",function(req, res){
 });
 
 app.post("/",function(req,res){
-  var fName = req.body.firstName;
-  var lName = req.body.lastName;
-  var email = req.body.email;
+  const fName = req.body.firstName;
+  const lName = req.body.lastName;
+  const email = req.body.email;
+
+  const data = {
+    email_address: email,
+    status: "subscribed",
+    merge_fields: {
+	     FNAME: fName,
+	     LNAME: lName
+     }
+  };
+
+  const jsonData = JSON.stringify(data);
+
+  const url = "https://us14.api.mailchimp.com/3.0/lists/20bd8d54e7/members";
+  const options = {
+    method:"POST",
+    auth:"Saizal:e496ef1e256052087465dff1dc8924c9-us14"
+  };
+
+  const request = https.request(url,options,function(response){
+    response.on("data",function(data){
+      console.log(JSON.parse(data));
+    })
+  });
+
+  request.write(jsonData);
+  request.end();
+
 });
 
 app.listen(3000, function(){
   console.log("Port is running");
 });
+
+// e496ef1e256052087465dff1dc8924c9-us14
+// API KEY
+
+// 20bd8d54e7
+// Audience id
